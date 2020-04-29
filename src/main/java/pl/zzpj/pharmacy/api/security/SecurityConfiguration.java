@@ -42,7 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()//TODO DO ZMIANY
+                .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
                 .and()
                 .httpBasic();
+        http.headers().frameOptions().disable(); //bez tego nie dziala consola h2
     }
 }
