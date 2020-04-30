@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+//  to nie potrzebne  @Column(name = "id", updatable = false , nullable = false)
     private Long id;
 
     @NotEmpty
@@ -41,9 +41,9 @@ public class Prescription {
 
     @ManyToMany
     @JoinTable(
-        name = "prescription_medicine",
-        joinColumns = @JoinColumn(name = "prescription_id"),
-        inverseJoinColumns = @JoinColumn(name = "medicine_id")
+            name = "prescription_medicine",
+            joinColumns = @JoinColumn(name = "prescription_id"),
+            inverseJoinColumns = @JoinColumn(name = "medicine_id")
     )
     private Set<Medicine> medicines;
 }

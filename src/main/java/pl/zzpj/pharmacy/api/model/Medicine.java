@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,12 +22,12 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Builder
 @Data
-@Table(name = "medicines")
+@Table(name = "medicine")
 public class Medicine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+//    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NotEmpty
@@ -40,6 +41,6 @@ public class Medicine {
     @ManyToMany(mappedBy = "medicines")
     private Set<Prescription> prescriptions;
 
-    @OneToMany(mappedBy = "medicine")
+    @OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL)
     private Set<MedicineOrder> medicineOrders;
 }

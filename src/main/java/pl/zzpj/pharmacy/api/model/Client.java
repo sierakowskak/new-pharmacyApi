@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+// nie potrzebne    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NotEmpty
@@ -42,7 +42,7 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private Set<Prescription> prescriptions;
 
-    @OneToMany(mappedBy = "medicineOrders")
+    @OneToMany(mappedBy = "client")
     private Set<Order> orders;
 
 }
