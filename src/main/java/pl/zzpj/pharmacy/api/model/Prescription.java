@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -26,7 +26,6 @@ public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//  to nie potrzebne  @Column(name = "id", updatable = false , nullable = false)
     private Long id;
 
     @NotEmpty

@@ -22,12 +22,11 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Builder
 @Data
-@Table(name = "medicine")
+@Table(name = "medicines")
 public class Medicine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NotEmpty

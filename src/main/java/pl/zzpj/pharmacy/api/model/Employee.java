@@ -23,11 +23,10 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",updatable = false, nullable = false)
     private Long id;
 
     @NotEmpty
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
     @NotEmpty
