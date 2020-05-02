@@ -8,6 +8,7 @@ import pl.zzpj.pharmacy.api.model.Client;
 import pl.zzpj.pharmacy.api.model.Order;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,22 +30,20 @@ public class ClientRepositoryTest {
                 .build();
         clients.save(client);
 
-        Optional<Client> result = clients.findById(2L);
-        Assert.assertTrue(result.isPresent());
-        Assert.assertEquals(result.get().getFirstName(), "Piotr");
-        Assert.assertEquals(result.get().getLastName(), "Ruc");
-        Assert.assertEquals(result.get().getAddress(), "Tu");
+        List<Client> result = clients.findByFirstAndLastName("Piotr", "Ruc");
+        Assert.assertFalse(result.isEmpty());
+        Assert.assertTrue(result.stream().anyMatch(r -> r.getAddress().equals("Tu")));
     }
 
     @Test
     public void findClientByOrder() {
         Set<Order> orders = new HashSet<>();
-        Order order = Order.builder().id(1L).build();
+        Order order = Order.builder().build();
         orders.add(order);
         Client client = Client.builder()
-                .firstName("Piotr1")
-                .lastName("Ruc1")
-                .address("Tu1")
+                .firstName("Niepiotr")
+                .lastName("Nieruc")
+                .address("Nietu")
                 .orders(orders)
                 .build();
         order.setClient(client);
@@ -53,8 +52,8 @@ public class ClientRepositoryTest {
 
         Optional<Client> result = clients.findByOrder(order);
         Assert.assertTrue(result.isPresent());
-        Assert.assertEquals(result.get().getFirstName(), "Piotr1");
-        Assert.assertEquals(result.get().getLastName(), "Ruc1");
-        Assert.assertEquals(result.get().getAddress(), "Tu1");
+        Assert.assertEquals(result.get().getFirstName(), "Niepiotr");
+        Assert.assertEquals(result.get().getLastName(), "Nieruc");
+        Assert.assertEquals(result.get().getAddress(), "Nietu");
     }
 }
