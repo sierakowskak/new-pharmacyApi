@@ -1,14 +1,14 @@
 package pl.zzpj.pharmacy.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class OrderService {
 
     private OrderRepository orders;
