@@ -25,32 +25,43 @@ public class ClientService {
         return clients.findById(id);
     }
 
-    public boolean removeClient(long id) {
+    public Optional<String> removeClient(long id) {
         Optional<Client> client = clients.findById(id);
-        if(client.isPresent()) {
+        try {
             orders.deleteAll(orders.findByClient(client.get()));
             clients.delete(client.get());
-            return true;
-        } else
-            return false;
+            return Optional.empty();
+        } catch (Exception e) {
+            return Optional.ofNullable(e.getMessage());
+        }
     }
 
     public List<Client> getAllClients() {
         return clients.findAll();
     }
 
-    public void addClient(Client client) {
-        clients.save(client);
+    public Optional<String> addClient(Client client) {
+        try {
+            clients.save(client);
+            return Optional.empty();
+        } catch (Exception e) {
+            return Optional.ofNullable(e.getMessage());
+        }
     }
 
-    public void updateClient(Client client){
-        clients.updateClient(
-                client.getId(),
-                client.getFirstName(),
-                client.getLastName(),
-                client.getAddress(),
-                client.getOrders(),
-                client.getPrescriptions()
-        );
+    public Optional<String> updateClient(Client client){
+        try {
+            clients.updateClient(
+                    client.getId(),
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getAddress(),
+                    client.getOrders(),
+                    client.getPrescriptions()
+            );
+            return Optional.empty();
+        } catch (Exception e) {
+            return Optional.ofNullable(e.getMessage());
+        }
     }
 }
