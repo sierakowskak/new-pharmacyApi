@@ -8,6 +8,7 @@ import pl.zzpj.pharmacy.api.model.Client;
 import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.model.Prescription;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +16,9 @@ public interface ClientRepository extends JpaRepository <Client, Long> {
 
     @Query("SELECT c FROM Client c WHERE :order MEMBER OF c.orders")
     Optional<Client> findByOrder(@Param("order") Order order);
+
+    @Query("SELECT c FROM Client c WHERE c.firstName =:firstName AND c.lastName =:lastName")
+    List<Client> findByFirstAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Client c SET c.firstName =:firstName, c.lastName =:lastName, c.address =:address, c.orders =:orders, c.prescriptions =:prescriptions WHERE c.id =:id")
