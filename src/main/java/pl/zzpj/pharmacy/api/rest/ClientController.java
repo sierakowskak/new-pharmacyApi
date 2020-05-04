@@ -21,8 +21,8 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping()
-    public ResponseEntity<Client> getClient(@RequestParam("id") long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Client> getClient(@PathVariable long id) {
         if (clientService.getClient(id).isPresent())
             return new ResponseEntity<>(clientService.getClient(id).get(), HttpStatus.OK);
         else

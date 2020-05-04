@@ -26,11 +26,14 @@ public class ClientService {
     }
 
     public Optional<String> removeClient(long id) {
-        Optional<Client> client = clients.findById(id);
         try {
-            orders.deleteAll(orders.findByClient(client.get()));
-            clients.delete(client.get());
-            return Optional.empty();
+            Optional<Client> client = clients.findById(id);
+            if(client.isPresent()) {
+                orders.deleteAll(orders.findByClient(client.get()));
+                clients.delete(client.get());
+                return Optional.empty();
+            } else
+                throw new Exception("Klient o podanym id nie istnieje");
         } catch (Exception e) {
             return Optional.ofNullable(e.getMessage());
         }
@@ -42,8 +45,12 @@ public class ClientService {
 
     public Optional<String> addClient(Client client) {
         try {
-            clients.save(client);
-            return Optional.empty();
+            if (clients.findById(client.getId()).isPresent()) {
+                throw new Exception("Klient o podanym id już istnieje");
+            } else {
+                clients.save(client);
+                return Optional.empty();
+            }
         } catch (Exception e) {
             return Optional.ofNullable(e.getMessage());
         }
@@ -51,15 +58,11 @@ public class ClientService {
 
     public Optional<String> updateClient(Client client){
         try {
-            clients.updateClient(
-                    client.getId(),
-                    client.getFirstName(),
-                    client.getLastName(),
-                    client.getAddress(),
-                    client.getOrders(),
-                    client.getPrescriptions()
-            );
-            return Optional.empty();
+            if(clients.findById(client.getId()).isPresent()) {
+                clients.save(client);
+                return Optional.empty();
+            } else
+                throw new Exception("Klient o podanym id nie istnieje");
         } catch (Exception e) {
             return Optional.ofNullable(e.getMessage());
         }
