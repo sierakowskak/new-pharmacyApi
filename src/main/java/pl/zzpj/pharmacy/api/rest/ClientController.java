@@ -1,6 +1,5 @@
 package pl.zzpj.pharmacy.api.rest;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,10 @@ import java.util.List;
 public class ClientController {
 
     private ClientService clientService;
-    private ModelMapper mapper;
 
     @Autowired
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
-        this.mapper = new ModelMapper();
     }
 
     @GetMapping("/{id}")
