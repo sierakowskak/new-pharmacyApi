@@ -1,70 +1,62 @@
 package pl.zzpj.pharmacy.api.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.zzpj.pharmacy.api.exception.ClientException;
 import pl.zzpj.pharmacy.api.model.Client;
+import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.repository.ClientRepository;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
 
     private ClientRepository clients;
     private OrderRepository orders;
+    private ModelMapper mapper;
 
     @Autowired
     public ClientService(ClientRepository clients, OrderRepository orders) {
         this.clients = clients;
         this.orders = orders;
+        this.mapper = new ModelMapper();
     }
 
-    public Optional<Client> getClient(long id) {
-        return clients.findById(id);
+    public ClientDTO getClient(long id) {
+        return clients.findById(id)
+                .map(c -> mapper.map(c, ClientDTO.class))
+                .orElseThrow(() -> new ClientException("Klient o podanym id nie istnieje"));
     }
 
-    public Optional<String> removeClient(long id) {
+    public Boolean removeClient(long id) {
         try {
-            Optional<Client> client = clients.findById(id);
-            if(client.isPresent()) {
-                orders.deleteAll(orders.findByClient(client.get()));
-                clients.delete(client.get());
-                return Optional.empty();
-            } else
-                throw new Exception("Klient o podanym id nie istnieje");
+            orders.deleteAll(orders.findByClient(clients.findById(id).get()));
+            clients.deleteById(id);
+            return true;
         } catch (Exception e) {
-            return Optional.ofNullable(e.getMessage());
+            throw new ClientException("Klient o podanym id nie istnieje");
         }
     }
 
-    public List<Client> getAllClients() {
-        return clients.findAll();
+    public List<ClientDTO> getAllClients() {
+        return clients.findAll()
+                .parallelStream()
+                .map(c -> mapper.map(c, ClientDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public Optional<String> addClient(Client client) {
-        try {
-            if (clients.findById(client.getId()).isPresent()) {
-                throw new Exception("Klient o podanym id już istnieje");
-            } else {
-                clients.save(client);
-                return Optional.empty();
-            }
-        } catch (Exception e) {
-            return Optional.ofNullable(e.getMessage());
-        }
+    public ClientDTO addClient(ClientDTO client) {
+        return mapper.map(clients.save(mapper.map(client, Client.class)), ClientDTO.class);
     }
 
-    public Optional<String> updateClient(Client client){
-        try {
-            if(clients.findById(client.getId()).isPresent()) {
-                clients.save(client);
-                return Optional.empty();
-            } else
-                throw new Exception("Klient o podanym id nie istnieje");
-        } catch (Exception e) {
-            return Optional.ofNullable(e.getMessage());
-        }
+    public ClientDTO updateClient(ClientDTO client) {
+        return clients.findById(client.getId())
+                .map(c -> clients.save(mapper.map(client, Client.class)))
+                .map(c -> mapper.map(c, ClientDTO.class))
+                .orElseThrow(() -> new ClientException("Klient o podanym id nie istnieje"));
     }
 }

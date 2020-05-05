@@ -1,57 +1,50 @@
 package pl.zzpj.pharmacy.api.rest;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.zzpj.pharmacy.api.model.Client;
+import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.service.ClientService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
 
     private ClientService clientService;
+    private ModelMapper mapper;
 
     @Autowired
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
+        this.mapper = new ModelMapper();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClient(@PathVariable long id) {
-        if (clientService.getClient(id).isPresent())
-            return new ResponseEntity<>(clientService.getClient(id).get(), HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ClientDTO> getClient(@PathVariable long id) {
+        return new ResponseEntity<>(clientService.getClient(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeClient(@PathVariable long id) {
-        Optional<String> eMessage = clientService.removeClient(id);
-        return eMessage.map(s -> new ResponseEntity<>(s, HttpStatus.BAD_REQUEST)) // Delete failed
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK)); // Delete succeeded
+    public ResponseEntity<Boolean> removeClient(@PathVariable long id) {
+        return new ResponseEntity<>(clientService.removeClient(id), HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Client>> getAllClients() {
+    public ResponseEntity<List<ClientDTO>> getAllClients() {
         return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<String> addClient(@RequestBody Client client) {
-        Optional<String> eMessage = clientService.addClient(client);
-        return eMessage.map(s -> new ResponseEntity<>(s, HttpStatus.BAD_REQUEST)) // Add failed
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK)); // Add succeeded
+    public ResponseEntity<ClientDTO> addClient(@RequestBody ClientDTO clientDTO) {
+        return new ResponseEntity<>(clientService.addClient(clientDTO), HttpStatus.OK);
     }
 
     @PutMapping()
-    public ResponseEntity<String> updateClient(@RequestBody Client client){
-        Optional<String> eMessage = clientService.updateClient(client);
-        return eMessage.map(s -> new ResponseEntity<>(s, HttpStatus.BAD_REQUEST)) // Update failed
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK)); // Update succeeded
+    public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO) {
+        return new ResponseEntity<>(clientService.updateClient(clientDTO), HttpStatus.OK);
     }
 }
