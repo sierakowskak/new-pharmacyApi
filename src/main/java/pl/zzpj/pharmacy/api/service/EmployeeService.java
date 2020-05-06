@@ -39,7 +39,7 @@ public class EmployeeService {
 
     public List<EmployeeDTO> getAllEmployees() {
         return employees.findAll()
-                .parallelStream()
+                .stream()
                 .map(e -> mapper.toEmployeeDTO(e))
                 .collect(Collectors.toList());
     }

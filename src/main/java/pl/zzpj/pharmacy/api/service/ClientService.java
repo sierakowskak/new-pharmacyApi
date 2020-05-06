@@ -42,7 +42,7 @@ public class ClientService {
 
     public List<ClientDTO> getAllClients() {
         return clients.findAll()
-                .parallelStream()
+                .stream()
                 .map(c -> mapper.toClientDTO(c))
                 .collect(Collectors.toList());
     }
