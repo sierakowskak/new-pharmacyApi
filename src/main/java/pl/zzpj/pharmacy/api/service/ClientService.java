@@ -1,11 +1,10 @@
 package pl.zzpj.pharmacy.api.service;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.exception.ClientException;
-import pl.zzpj.pharmacy.api.model.Client;
 import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
+import pl.zzpj.pharmacy.api.objectDTO.mapper.ClientMapper;
 import pl.zzpj.pharmacy.api.repository.ClientRepository;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
 
@@ -17,10 +16,10 @@ public class ClientService {
 
     private ClientRepository clients;
     private OrderRepository orders;
-    private ModelMapper mapper;
+    private ClientMapper mapper;
 
     @Autowired
-    public ClientService(ClientRepository clients, OrderRepository orders, ModelMapper mapper) {
+    public ClientService(ClientRepository clients, OrderRepository orders, ClientMapper mapper) {
         this.clients = clients;
         this.orders = orders;
         this.mapper = mapper;
@@ -28,7 +27,7 @@ public class ClientService {
 
     public ClientDTO getClient(long id) {
         return clients.findById(id)
-                .map(c -> mapper.map(c, ClientDTO.class))
+                .map(c -> mapper.toClientDTO(c))
                 .orElseThrow(() -> new ClientException("Klient o podanym id nie istnieje"));
     }
 
@@ -44,18 +43,18 @@ public class ClientService {
     public List<ClientDTO> getAllClients() {
         return clients.findAll()
                 .parallelStream()
-                .map(c -> mapper.map(c, ClientDTO.class))
+                .map(c -> mapper.toClientDTO(c))
                 .collect(Collectors.toList());
     }
 
     public ClientDTO addClient(ClientDTO client) {
-        return mapper.map(clients.save(mapper.map(client, Client.class)), ClientDTO.class);
+        return mapper.toClientDTO(clients.save(mapper.toClient(client)));
     }
 
     public ClientDTO updateClient(ClientDTO client) {
         return clients.findById(client.getId())
-                .map(c -> clients.save(mapper.map(client, Client.class)))
-                .map(c -> mapper.map(c, ClientDTO.class))
+                .map(c -> clients.save(mapper.toClient(client)))
+                .map(c -> mapper.toClientDTO(c))
                 .orElseThrow(() -> new ClientException("Klient o podanym id nie istnieje"));
     }
 }
