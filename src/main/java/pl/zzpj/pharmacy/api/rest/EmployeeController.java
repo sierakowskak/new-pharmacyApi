@@ -1,12 +1,13 @@
 package pl.zzpj.pharmacy.api.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.zzpj.pharmacy.api.model.Employee;
+import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 import pl.zzpj.pharmacy.api.service.EmployeeService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -20,27 +21,27 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Employee> getEmployee(@PathVariable long id) {
-        return employeeService.getEmployee(id);
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable long id) {
+        return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void removeEmployee(@PathVariable long id) {
-        employeeService.removeEmployee(id);
+    public ResponseEntity<Boolean> removeEmployee(@PathVariable long id) {
+        return new ResponseEntity<>(employeeService.removeEmployee(id), HttpStatus.OK);
     }
 
     @GetMapping()
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
     }
 
     @PostMapping()
-    public void addEmployee(@RequestBody Employee employee) {
-        employeeService.addEmployee(employee);
+    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return new ResponseEntity<>(employeeService.addEmployee(employeeDTO), HttpStatus.OK);
     }
 
     @PutMapping()
-    public void updateEmployee(@RequestBody Employee employee){
-        employeeService.updateEmployee(employee);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return new ResponseEntity<>(employeeService.updateEmployee(employeeDTO), HttpStatus.OK);
     }
 }

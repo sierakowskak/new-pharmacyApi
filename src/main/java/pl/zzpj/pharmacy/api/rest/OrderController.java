@@ -1,12 +1,13 @@
 package pl.zzpj.pharmacy.api.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.zzpj.pharmacy.api.model.Order;
+import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 import pl.zzpj.pharmacy.api.service.OrderService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -20,27 +21,27 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Order> getOrder(@PathVariable long id) {
-        return orderService.getOrder(id);
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable long id) {
+        return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void removeOrder(@PathVariable long id) {
-        orderService.removeOrder(id);
+    public ResponseEntity<Boolean> removeOrder(@PathVariable long id) {
+        return new ResponseEntity<>(orderService.removeOrder(id), HttpStatus.OK);
     }
 
     @GetMapping()
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
 
     @PostMapping()
-    public void addOrder(@RequestBody Order order) {
-        orderService.addOrder(order);
+    public ResponseEntity<OrderDTO> addOrder(@RequestBody OrderDTO orderDTO) {
+        return new ResponseEntity<>(orderService.addOrder(orderDTO), HttpStatus.OK);
     }
 
     @PutMapping()
-    public void updateOrder(@RequestBody Order order){
-        orderService.updateOrder(order);
+    public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO orderDTO) {
+        return new ResponseEntity<>(orderService.updateOrder(orderDTO), HttpStatus.OK);
     }
 }

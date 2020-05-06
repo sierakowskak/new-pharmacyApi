@@ -37,7 +37,7 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private Set<Prescription> prescriptions;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private Set<Order> orders;
 
 }

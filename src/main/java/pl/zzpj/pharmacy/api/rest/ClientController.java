@@ -37,7 +37,7 @@ public class ClientController {
 
     @PostMapping()
     public ResponseEntity<ClientDTO> addClient(@RequestBody ClientDTO clientDTO) {
-        return new ResponseEntity<>(clientService.addClient(clientDTO), HttpStatus.OK);
+        return new ResponseEntity<>(clientService.addClient(clientDTO), HttpStatus.CREATED);
     }
 
     @PutMapping()

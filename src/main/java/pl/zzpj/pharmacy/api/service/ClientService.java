@@ -20,10 +20,10 @@ public class ClientService {
     private ModelMapper mapper;
 
     @Autowired
-    public ClientService(ClientRepository clients, OrderRepository orders) {
+    public ClientService(ClientRepository clients, OrderRepository orders, ModelMapper mapper) {
         this.clients = clients;
         this.orders = orders;
-        this.mapper = new ModelMapper();
+        this.mapper = mapper;
     }
 
     public ClientDTO getClient(long id) {
@@ -34,7 +34,6 @@ public class ClientService {
 
     public Boolean removeClient(long id) {
         try {
-            orders.deleteAll(orders.findByClient(clients.findById(id).get()));
             clients.deleteById(id);
             return true;
         } catch (Exception e) {
