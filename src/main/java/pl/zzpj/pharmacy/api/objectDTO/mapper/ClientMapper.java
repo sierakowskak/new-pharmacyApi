@@ -5,8 +5,13 @@ import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 
 public class ClientMapper {
 
-    public Client toClient(ClientDTO clientDTO) {
+    public static Client toClient(ClientDTO clientDTO) {
         return Client.builder()
+                     .id(clientDTO.getId())
+                     .address(clientDTO.getAddress())
+                     .firstName(clientDTO.getFirstName())
+                     .lastName(clientDTO.getLastName())
+                     .build();
                 // TO DO
                 /*
                 .id(clientDTO.getId())
@@ -16,11 +21,14 @@ public class ClientMapper {
                 .orders(clientDTO.getOrders())
                 .prescriptions(clientDTO.getPrescriptions())
                 */
-                .build();
     }
 
-    public ClientDTO toClientDTO(Client client) {
+    public static ClientDTO toClientDTO(Client client) {
         return ClientDTO.builder()
+                        .firstName(client.getFirstName())
+                        .lastName(client.getLastName())
+                        .address(client.getAddress())
+                        .id(client.getId()).build();
                 // TO DO
                 /*
                 .id(client.getId())
@@ -30,6 +38,5 @@ public class ClientMapper {
                 .orders(client.getOrders())
                 .prescriptions(client.getPrescriptions())
                  */
-                .build();
     }
 }

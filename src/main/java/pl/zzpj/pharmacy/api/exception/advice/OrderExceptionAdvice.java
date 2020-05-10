@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.zzpj.pharmacy.api.exception.ClientException;
+import pl.zzpj.pharmacy.api.exception.OrderNotValidException;
 
 @ControllerAdvice
 public class OrderExceptionAdvice {
@@ -14,6 +15,13 @@ public class OrderExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ClientException.class)
     public String returnResponse(ClientException e) {
+        return e.getMessage();
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OrderNotValidException.class)
+    public String returnResponse(OrderNotValidException e) {
         return e.getMessage();
     }
 }

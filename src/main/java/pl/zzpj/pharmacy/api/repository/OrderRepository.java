@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+
+    List<Order> findAllByClient_Id( Long id );
+
     @Query("SELECT ord FROM Order ord WHERE ord.client =:client")
-    List<Order> findByClient (@Param("client") Client client);
+    List<Order> findByClient( @Param("client") Client client );
+
+    boolean existsById( Long id );
 }

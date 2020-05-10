@@ -16,6 +16,6 @@ import java.util.Set;
 public class OrderDTO {
 
     private Long id;
-    private Client client;
+    private ClientDTO client;
     private Set<MedicineOrder> medicineOrders;
 }

@@ -1,19 +1,25 @@
 package pl.zzpj.pharmacy.api.objectDTO.mapper;
 
+import pl.zzpj.pharmacy.api.model.Client;
 import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 
 public class OrderMapper {
 
-    public Order toOrder(OrderDTO orderDTO) {
+    public static Order toOrder(OrderDTO orderDTO, Client client) {
         return Order.builder()
-                // TO DO
-                .build();
+                    .id(orderDTO.getId())
+                    .client(client)
+                    //todo mapper for medicine orders and client
+                    .medicineOrders(orderDTO.getMedicineOrders())
+                    .build();
     }
 
-    public OrderDTO toOrderDTO(Order order) {
+    public static OrderDTO toOrderDTO(Order order) {
         return OrderDTO.builder()
-                // TO DO
-                .build();
+                       .client(ClientMapper.toClientDTO(order.getClient()))
+                       .id(order.getId())
+                       .medicineOrders(order.getMedicineOrders())
+                       .build();
     }
 }
