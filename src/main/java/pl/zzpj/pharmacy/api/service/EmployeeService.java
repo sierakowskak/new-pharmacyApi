@@ -52,9 +52,10 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employee) {
-        employee.setPassword(passwordEncoder.encode(employee.getPassword())); //todo jak to dodac do streama
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeRepository.findById(employee.getId())
-                .map(c -> employeeRepository.save(EmployeeMapper.toEmployee(employee)))
+                .map(e -> employeeRepository.save(
+                    EmployeeMapper.toEmployee(employee)))
                 .map(EmployeeMapper::toEmployeeDTO)
                 .orElseThrow(() -> new EmployeeException("Klient o podanym id nie istnieje"));
     }
