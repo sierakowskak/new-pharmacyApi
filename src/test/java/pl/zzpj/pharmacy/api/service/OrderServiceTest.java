@@ -1,4 +1,4 @@
-package pl.zzpj.pharmacy.api.order;
+package pl.zzpj.pharmacy.api.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

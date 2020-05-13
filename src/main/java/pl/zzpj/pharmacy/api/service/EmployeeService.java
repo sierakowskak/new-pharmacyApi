@@ -1,6 +1,6 @@
 package pl.zzpj.pharmacy.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.exception.EmployeeException;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
@@ -13,45 +13,49 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeService {
 
-    private EmployeeRepository employees;
-    private EmployeeMapper mapper;
+    private EmployeeRepository employeeRepository;
+    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public EmployeeService(EmployeeRepository employees, EmployeeMapper mapper) {
-        this.employees = employees;
-        this.mapper = mapper;
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
+        this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public EmployeeDTO getEmployee(long id) {
-        return employees.findById(id)
-                .map(e -> mapper.toEmployeeDTO(e))
+        return employeeRepository.findById(id)
+                .map(EmployeeMapper::toEmployeeDTO)
                 .orElseThrow(() -> new EmployeeException("Pracownik o podanym id nie istnieje"));
     }
 
-    public Boolean removeEmployee(long id) {
-        try {
-            employees.deleteById(id);
-            return true;
-        } catch (Exception e) {
+    public void removeEmployee(long id) {
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+        } else {
             throw new EmployeeException("Pracownik o podanym id nie istnieje");
         }
     }
 
     public List<EmployeeDTO> getAllEmployees() {
-        return employees.findAll()
+        return employeeRepository.findAll()
                 .stream()
-                .map(e -> mapper.toEmployeeDTO(e))
+                .map(EmployeeMapper::toEmployeeDTO)
                 .collect(Collectors.toList());
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employee) {
-        return mapper.toEmployeeDTO(employees.save(mapper.toEmployee(employee)));
+        if(!employeeRepository.existsByLogin(employee.getLogin())){
+            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+            return EmployeeMapper.toEmployeeDTO(employeeRepository.save(EmployeeMapper.toEmployee(employee)));
+        }else{
+            throw new EmployeeException("Pracownik o podanym loginie już istnieje");
+        }
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employee) {
-        return employees.findById(employee.getId())
-                .map(c -> employees.save(mapper.toEmployee(employee)))
-                .map(c -> mapper.toEmployeeDTO(c))
+        employee.setPassword(passwordEncoder.encode(employee.getPassword())); //todo jak to dodac do streama
+        return employeeRepository.findById(employee.getId())
+                .map(c -> employeeRepository.save(EmployeeMapper.toEmployee(employee)))
+                .map(EmployeeMapper::toEmployeeDTO)
                 .orElseThrow(() -> new EmployeeException("Klient o podanym id nie istnieje"));
     }
 }

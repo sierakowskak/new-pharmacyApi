@@ -24,7 +24,7 @@ public class EmployeeRepositoryTest {
                 .build();
         employees.save(employee);
 
-        List<Employee> result = employees.findByFirstAndLastName("Piotrek", "Ruc");
+        List<Employee> result = employees.findByFirstNameAndLastName("Piotrek", "Ruc");
         Assert.assertFalse(result.isEmpty());
         Assert.assertTrue(result.stream().anyMatch(r ->
                 r.getLogin().equals("login") && r.getPassword().equals("password"))
