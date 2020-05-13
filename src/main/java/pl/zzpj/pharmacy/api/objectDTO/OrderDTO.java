@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.zzpj.pharmacy.api.model.Client;
 import pl.zzpj.pharmacy.api.model.MedicineOrder;
 
 import java.util.Set;

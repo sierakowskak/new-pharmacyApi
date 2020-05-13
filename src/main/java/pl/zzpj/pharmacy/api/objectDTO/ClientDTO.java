@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.model.Prescription;
 
 import java.util.Set;
@@ -20,5 +19,4 @@ public class ClientDTO {
     private String lastName;
     private String address;
     private Set<Prescription> prescriptions;
-    private Set<Order> orders;
 }

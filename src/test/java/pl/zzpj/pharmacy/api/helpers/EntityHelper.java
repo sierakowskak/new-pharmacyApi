@@ -9,6 +9,8 @@ import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 
+import java.util.HashSet;
+
 public class EntityHelper {
 
     public static ClientDTO prepareClientDTO(Long id) {
@@ -26,6 +28,7 @@ public class EntityHelper {
                            .address("jakis")
                            .firstName("Marek")
                            .lastName("Mostowiak")
+                           .orders(new HashSet<>())
                            .build();
     }
 
