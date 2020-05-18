@@ -33,10 +33,9 @@ public class ClientService {
                 .orElseThrow(() -> new ClientException("Klient o podanym id nie istnieje"));
     }
 
-    public Boolean removeClient(long id) {
+    public void removeClient(long id) {
         try {
             clients.deleteById(id);
-            return true;
         } catch (Exception e) {
             throw new EntityNotFoundException();
         }

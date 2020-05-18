@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-//    @Query("SELECT e FROM Employee e WHERE e.firstName =:firstName AND e.lastName =:lastName")
-//    List<Employee> findByFirstAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
     List<Employee> findByFirstNameAndLastName(String firstName, String lastName);
 
     Boolean existsByLogin(String login);

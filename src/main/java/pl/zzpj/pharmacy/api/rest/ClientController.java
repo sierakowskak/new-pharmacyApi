@@ -27,7 +27,7 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> removeClient(@PathVariable long id) {
-        return new ResponseEntity<>(clientService.removeClient(id), HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping()
