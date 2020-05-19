@@ -75,6 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()//TODO DO ZMIANY
                 .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
+                .antMatchers("/employees/login**").permitAll()
                 .and()
                 .httpBasic()
         .and().headers().frameOptions().disable(); //bez tego nie dziala consola h2

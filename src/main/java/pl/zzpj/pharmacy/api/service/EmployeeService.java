@@ -1,5 +1,6 @@
 package pl.zzpj.pharmacy.api.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,8 @@ public class EmployeeService {
 
 
     public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager, Jwt jwtUtils, UserDetailsService userDetailsService) {
+                           AuthenticationManager authenticationManager, Jwt jwtUtils,
+        @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -91,9 +93,7 @@ public class EmployeeService {
 
         String jwtToken = jwtUtils.generateJwtToken(authentication);
 
-//        EmployeeDTO employeeDTO = userService.getUser(authentication);
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-
+        EmployeeDTO employeeDTO = (EmployeeDTO) authentication.getPrincipal();
 
         return Pair.of(employeeDTO, jwtToken);
     }

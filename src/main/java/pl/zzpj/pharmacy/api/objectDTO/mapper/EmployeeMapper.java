@@ -1,5 +1,6 @@
 package pl.zzpj.pharmacy.api.objectDTO.mapper;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.zzpj.pharmacy.api.model.Employee;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 
@@ -25,4 +26,5 @@ public class EmployeeMapper {
                 .password(employee.getPassword())
                 .build();
     }
+
 }
