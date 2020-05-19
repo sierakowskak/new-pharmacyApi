@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -45,7 +45,7 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return new ResponseEntity<>(employeeService.addEmployee(employeeDTO), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.addEmployee(employeeDTO), HttpStatus.CREATED);
     }
 
     @PutMapping

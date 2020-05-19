@@ -1,8 +1,6 @@
 package pl.zzpj.pharmacy.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import pl.zzpj.pharmacy.api.model.Employee;
 
 import java.util.List;

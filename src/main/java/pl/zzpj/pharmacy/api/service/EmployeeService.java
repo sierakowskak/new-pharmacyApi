@@ -5,14 +5,11 @@ import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.exception.EmployeeException;
-import pl.zzpj.pharmacy.api.model.Employee;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDetails;
 import pl.zzpj.pharmacy.api.objectDTO.LoginDTO;
@@ -21,19 +18,17 @@ import pl.zzpj.pharmacy.api.repository.EmployeeRepository;
 import pl.zzpj.pharmacy.api.security.Jwt;
 
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
 
-    private EmployeeRepository employeeRepository;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
-    private Jwt jwtUtils;
-    private UserDetailsService userDetailsService;
+    private final EmployeeRepository employeeRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final Jwt jwtUtils;
+    private final UserDetailsService userDetailsService;
 
 
     public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder,
@@ -82,7 +77,7 @@ public class EmployeeService {
                 .map(e -> employeeRepository.save(
                         EmployeeMapper.toEmployee(employee)))
                 .map(EmployeeMapper::toEmployeeDTO)
-                .orElseThrow(() -> new EmployeeException("Klient o podanym id nie istnieje"));
+                .orElseThrow(() -> new EmployeeException("Pracownik o podanym id nie istnieje"));
     }
 
     public Pair<EmployeeDTO, String> loginEmployee(LoginDTO loginDTO) {

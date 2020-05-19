@@ -6,9 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.exception.EmployeeException;
 import pl.zzpj.pharmacy.api.model.Employee;
-import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDetails;
-import pl.zzpj.pharmacy.api.objectDTO.mapper.EmployeeMapper;
 import pl.zzpj.pharmacy.api.repository.EmployeeRepository;
 
 import java.util.Optional;

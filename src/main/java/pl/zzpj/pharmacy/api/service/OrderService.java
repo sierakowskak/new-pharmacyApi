@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private OrderRepository ordersRepository;
-    private ClientRepository clientRepository;
+    private final OrderRepository ordersRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
     public OrderService(OrderRepository ordersRepository, ClientRepository clientRepository) {

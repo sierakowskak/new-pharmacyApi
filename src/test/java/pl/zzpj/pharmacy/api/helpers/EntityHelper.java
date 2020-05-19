@@ -7,6 +7,7 @@ import pl.zzpj.pharmacy.api.model.MedicineOrder;
 import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
+import pl.zzpj.pharmacy.api.objectDTO.MedicineDTO;
 import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 
 import java.util.HashSet;
@@ -14,55 +15,65 @@ import java.util.HashSet;
 public class EntityHelper {
 
     public static ClientDTO prepareClientDTO(Long id) {
-        return new ClientDTO().builder()
-                              .id(id)
-                              .address("jakis")
-                              .firstName("Marek")
-                              .lastName("Mostowiak")
-                              .build();
+        return ClientDTO.builder()
+                .id(id)
+                .address("jakis")
+                .firstName("Marek")
+                .lastName("Mostowiak")
+                .build();
     }
 
     public static Client prepareClient(Long id) {
-        return new Client().builder()
-                           .id(id)
-                           .address("jakis")
-                           .firstName("Marek")
-                           .lastName("Mostowiak")
-                           .orders(new HashSet<>())
-                           .build();
+        return Client.builder()
+                .id(id)
+                .address("jakis")
+                .firstName("Marek")
+                .lastName("Mostowiak")
+                .orders(new HashSet<>())
+                .build();
     }
 
     public static Order prepareOrder(Long id, Client client) {
-        return new Order().builder()
-                          .client(client)
-                          .id(id)
-                          .build();
+        return Order.builder()
+                .client(client)
+                .id(id)
+                .build();
     }
 
     public static OrderDTO prepareOrderDTO(Long id, ClientDTO client) {
-        return new OrderDTO().builder()
-                             .client(client)
-                             .id(id)
-                             .build();
+        return OrderDTO.builder()
+                .client(client)
+                .id(id)
+                .build();
     }
 
     public static Medicine prepareMedicine(Long id) {
-        Medicine medicine = new Medicine();
-        medicine.setId(id);
-        medicine.set_prescript(false);
-        medicine.setName("Acodin");
-        return medicine;
+        return Medicine.builder()
+                .id(id)
+                .name("Acodin")
+                .isPrescript(false)
+                .medicineOrders(new HashSet<>())
+                .prescriptions(new HashSet<>())
+                .build();
     }
 
+    public static MedicineDTO prepareMedicineDTO(Medicine medicine) {
+        return MedicineDTO.builder()
+                .id(medicine.getId())
+                .name(medicine.getName())
+                .isPrescript(medicine.isPrescript())
+                .build();
+    }
+    
     public static MedicineOrder prepareMedicineOrder(Medicine medicine, Order order) {
-        MedicineOrder medicineOrder = new MedicineOrder();
-        medicineOrder.setAmount(4);
-        medicineOrder.setMedicine(medicine);
-        medicineOrder.setOrder(order);
-        return medicineOrder;
+        return MedicineOrder.builder()
+                .amount(4)
+                .medicine(medicine)
+                .order(order)
+                .build();
     }
 
-    public static Employee prepareEmployee1(){
+    public static Employee prepareEmployee1() {
         return Employee.builder()
                 .id(1L)
                 .firstName("mateuszek")
@@ -72,7 +83,7 @@ public class EntityHelper {
                 .build();
     }
 
-    public static Employee prepareEmployee2(){
+    public static Employee prepareEmployee2() {
         return Employee.builder()
                 .id(2L)
                 .firstName("adam")
@@ -82,7 +93,7 @@ public class EntityHelper {
                 .build();
     }
 
-    public static EmployeeDTO prepareEmployeeDTO(Employee employee){
+    public static EmployeeDTO prepareEmployeeDTO(Employee employee) {
         return EmployeeDTO.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())

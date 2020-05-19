@@ -1,6 +1,7 @@
 package pl.zzpj.pharmacy.api.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MedicineOrder implements Serializable {
 
     private int amount;

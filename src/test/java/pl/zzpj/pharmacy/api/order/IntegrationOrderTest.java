@@ -16,7 +16,6 @@ import pl.zzpj.pharmacy.api.repository.OrderRepository;
 import pl.zzpj.pharmacy.api.service.OrderService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest

@@ -1,7 +1,5 @@
 package pl.zzpj.pharmacy.api.objectDTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,13 +14,13 @@ import java.util.Set;
 public class EmployeeDetails implements UserDetails {
 
     @Getter
-    private Long id;
+    private final Long id;
     @Getter
-    private String firstName;
+    private final String firstName;
     @Getter
-    private String lastName;
-    private String login;
-    private String password;
+    private final String lastName;
+    private final String login;
+    private final String password;
 
     public EmployeeDetails (Employee employee) {
         this.id = employee.getId();

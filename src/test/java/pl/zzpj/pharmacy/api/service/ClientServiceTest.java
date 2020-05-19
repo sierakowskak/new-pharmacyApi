@@ -4,36 +4,19 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import pl.zzpj.pharmacy.api.exception.ClientException;
-import pl.zzpj.pharmacy.api.exception.OrderException;
-import pl.zzpj.pharmacy.api.exception.OrderNotValidException;
 import pl.zzpj.pharmacy.api.helpers.EntityHelper;
 import pl.zzpj.pharmacy.api.model.Client;
-import pl.zzpj.pharmacy.api.model.MedicineOrder;
-import pl.zzpj.pharmacy.api.model.Order;
 import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
-import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
-import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 import pl.zzpj.pharmacy.api.repository.ClientRepository;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
 import pl.zzpj.pharmacy.api.service.ClientService;
-import pl.zzpj.pharmacy.api.service.OrderService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -53,16 +36,12 @@ public class ClientServiceTest {
 
     Client client;
     ClientDTO clientDTO;
-    OrderDTO orderDTO;
-    Order order;
 
     @BeforeEach
     void setup() {
         clientService = new ClientService(clientRepository, orderRepository);
         client = EntityHelper.prepareClient(5L);
         clientDTO = EntityHelper.prepareClientDTO(5L);
-        orderDTO = EntityHelper.prepareOrderDTO(8L, clientDTO);
-        order = EntityHelper.prepareOrder(8L, client);
 
     }
 
