@@ -10,7 +10,7 @@ public class MedicineMapper {
     public static Medicine toMedicine(MedicineDTO medicineDTO) {
         return Medicine.builder()
                 .id(medicineDTO.getId())
-                .isPrescript(medicineDTO.isPrescript())
+                .isPrescript(medicineDTO.getIsPrescript())
                 .name(medicineDTO.getName())
                 .prescriptions(new HashSet<>())
                 .medicineOrders(new HashSet<>())

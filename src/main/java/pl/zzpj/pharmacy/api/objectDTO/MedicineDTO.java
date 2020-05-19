@@ -13,5 +13,5 @@ public class MedicineDTO {
 
     private Long id;
     private String name;
-    private boolean isPrescript;
+    private Boolean isPrescript;
 }

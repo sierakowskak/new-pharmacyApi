@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
                 .antMatchers("/employees/login/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/medicines").permitAll()
                 .antMatchers(HttpMethod.GET, "/medicines/**").permitAll()
                 .antMatchers("/medicines/**").authenticated()
                 .and()
