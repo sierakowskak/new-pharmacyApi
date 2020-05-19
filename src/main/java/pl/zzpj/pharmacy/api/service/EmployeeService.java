@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.zzpj.pharmacy.api.exception.EmployeeException;
+import pl.zzpj.pharmacy.api.model.Employee;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
+import pl.zzpj.pharmacy.api.objectDTO.EmployeeDetails;
 import pl.zzpj.pharmacy.api.objectDTO.LoginDTO;
 import pl.zzpj.pharmacy.api.objectDTO.mapper.EmployeeMapper;
 import pl.zzpj.pharmacy.api.repository.EmployeeRepository;
@@ -84,16 +86,22 @@ public class EmployeeService {
     }
 
     public Pair<EmployeeDTO, String> loginEmployee(LoginDTO loginDTO) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getLogin());
+        EmployeeDetails userDetails = (EmployeeDetails) userDetailsService.loadUserByUsername(loginDTO.getLogin());
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-                = new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getPassword(), userDetails.getAuthorities());
+                = new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwtToken = jwtUtils.generateJwtToken(authentication);
 
-        EmployeeDTO employeeDTO = (EmployeeDTO) authentication.getPrincipal();
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .id(userDetails.getId())
+                .firstName(userDetails.getFirstName())
+                .lastName(userDetails.getLastName())
+                .login(userDetails.getUsername())
+                .password(userDetails.getPassword())
+                .build();
 
         return Pair.of(employeeDTO, jwtToken);
     }

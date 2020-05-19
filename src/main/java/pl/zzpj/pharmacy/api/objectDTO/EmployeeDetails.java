@@ -2,17 +2,24 @@ package pl.zzpj.pharmacy.api.objectDTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.zzpj.pharmacy.api.model.Employee;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+
 public class EmployeeDetails implements UserDetails {
 
+    @Getter
     private Long id;
+    @Getter
     private String firstName;
+    @Getter
     private String lastName;
     private String login;
     private String password;
@@ -27,7 +34,9 @@ public class EmployeeDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<SimpleGrantedAuthority> h = new HashSet<>();
+        h.add(new SimpleGrantedAuthority("USER"));
+        return h;
     }
 
     @Override
@@ -52,11 +61,11 @@ public class EmployeeDetails implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

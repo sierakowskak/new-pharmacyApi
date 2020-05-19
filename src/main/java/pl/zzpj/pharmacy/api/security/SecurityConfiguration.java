@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -37,8 +38,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication()
-//                .withUser("admin").password(this.password).roles("ADMIN");
+//                .withUser("admin").password(this.password).roles("ADMIN")
+//                .and()
+//                .withUser("monisia").password(passwordEncoder.encode("12345678")).roles("USER")
 //    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
+
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -55,29 +65,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        return new AuthEntryPointJwt();
 //    }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().disable()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()//TODO DO ZMIANY
-                .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
-                .antMatchers("/employees/login**").permitAll()
-                .and()
-                .httpBasic()
-        .and().headers().frameOptions().disable(); //bez tego nie dziala consola h2
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().antMatchers("/employess/login/**").permitAll()
+                .anyRequest().authenticated();
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.cors().disable()
+//                .csrf().disable()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/**").permitAll()//TODO DO ZMIANY
+//                .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
+//                .antMatchers("/employees/login/**").permitAll()
+//                .and()
+//                .httpBasic()
+//        .and().headers().frameOptions().disable(); //bez tego nie dziala consola h2
+//    }
 }
