@@ -71,29 +71,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/employess/login/**").permitAll()
-                .anyRequest().authenticated();
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
-
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors().disable()
-//                .csrf().disable()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/**").permitAll()//TODO DO ZMIANY
-//                .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
-//                .antMatchers("/employees/login/**").permitAll()
-//                .and()
-//                .httpBasic()
-//        .and().headers().frameOptions().disable(); //bez tego nie dziala consola h2
+//        http.cors().and().csrf().disable()
+//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .authorizeRequests().antMatchers("/employess/login/**").permitAll()
+//                .anyRequest().authenticated();
+//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().disable()
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                //.antMatchers("/**").permitAll()//TODO DO ZMIANY
+                .antMatchers("/console/**").permitAll() //bez tego nie dziala consola h2
+                .antMatchers("/employees/login/**").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/medicines/**").authenticated() //hasRole("USER")
+                .and()
+                .httpBasic()
+        .and().headers().frameOptions().disable(); //bez tego nie dziala consola h2
+    }
 }
