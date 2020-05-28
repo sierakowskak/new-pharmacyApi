@@ -30,11 +30,32 @@ public class ClientRepositoryTest {
                 .build();
         clients.save(client);
 
-        List<Client> result = clients.findByFirstNameAndLastName("Piotr", "Ruc");
+        List<Client> result = clients.findByFirstAndLastName("Piotr", "Ruc");
         Assert.assertFalse(result.isEmpty());
         Assert.assertTrue(result.stream().anyMatch(r -> r.getAddress().equals("Tu")));
     }
 
+    @Test
+    public void findClientByOrder() {
+        Set<Order> orders = new HashSet<>();
+        Order order = Order.builder().build();
+        orders.add(order);
+        Client client = Client.builder()
+                .firstName("Niepiotr")
+                .lastName("Nieruc")
+                .address("Nietu")
+                .orders(orders)
+                .build();
+        order.setClient(client);
+        clients.save(client);
+        ordersRepo.save(order);
+
+        Optional<Client> result = clients.findByOrder(order);
+        Assert.assertTrue(result.isPresent());
+        Assert.assertEquals(result.get().getFirstName(), "Niepiotr");
+        Assert.assertEquals(result.get().getLastName(), "Nieruc");
+        Assert.assertEquals(result.get().getAddress(), "Nietu");
+    }
 
     @Test
     public void deleteClient() {
@@ -60,14 +81,14 @@ public class ClientRepositoryTest {
                 .build();
         clients.save(client);
 
-        List<Client> result = clients.findByFirstNameAndLastName("Piter", "Ruc");
+        List<Client> result = clients.findByFirstAndLastName("Piter", "Ruc");
         Assert.assertTrue(result.stream().anyMatch(r -> r.getAddress().equals("Tu")));
 
         long count = clients.count();
         client.setFirstName("Pioter");
         client.setAddress("Tam");
 
-        result = clients.findByFirstNameAndLastName("Pioter", "Ruc");
+        result = clients.findByFirstAndLastName("Pioter", "Ruc");
         Assert.assertTrue(result.stream().anyMatch(r -> r.getAddress().equals("Tam")));
         Assert.assertEquals(count, clients.count());
     }

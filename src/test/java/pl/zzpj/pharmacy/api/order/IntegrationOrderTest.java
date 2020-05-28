@@ -36,21 +36,27 @@ public class IntegrationOrderTest {
 
     @Test
     public void shouldSave() throws Exception {
+        //given
         Client save = clientRepository.save(EntityHelper.prepareClient(null));
 
+        //when
         MvcResult result = mockMvc.perform(post("/orders").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(EntityHelper.prepareOrderDTO(null,
-                        EntityHelper.prepareClientDTO(save.getId())))))
-                .andReturn();
+                                                            .content(objectMapper.writeValueAsString(EntityHelper.prepareOrderDTO(null,
+                                                                                                                                  EntityHelper.prepareClientDTO(save.getId())))))
+                                     .andReturn();
+        //then
         assertThat(result.getResponse().getStatus(), Matchers.is(201));
     }
-
     @Test
     public void shouldNotSave() throws Exception {
+        //given
+
+        //when
         MvcResult result = mockMvc.perform(post("/orders").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(EntityHelper.prepareOrderDTO(null,
-                        EntityHelper.prepareClientDTO(7L)))))
-                .andReturn();
+                                                            .content(objectMapper.writeValueAsString(EntityHelper.prepareOrderDTO(null,
+                                                                                                                                  EntityHelper.prepareClientDTO(7L)))))
+                                     .andReturn();
+        //then
         assertThat(result.getResponse().getStatus(), Matchers.is(400));
     }
 }
