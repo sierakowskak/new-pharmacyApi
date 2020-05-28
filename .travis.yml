@@ -1,8 +1,10 @@
 language: java
-deploy:
-  provider: heroku
-  api_key:
-    secure: c11b8400-9aca-45c0-aeed-119262286c2c
-  app: pharmacytul
-  on:
-    repo: mvwojcik/pharmacyAPI
+sudo: true
+dist: trusty
+jdk: oraclejdk9
+addons:
+  apt:
+    packages:
+      - oracle-java9-installer
+before_install:
+  - chmod +x mvnw
