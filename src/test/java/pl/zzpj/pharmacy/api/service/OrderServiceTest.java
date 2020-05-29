@@ -17,15 +17,16 @@ import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 import pl.zzpj.pharmacy.api.repository.ClientRepository;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
-import pl.zzpj.pharmacy.api.service.OrderService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
