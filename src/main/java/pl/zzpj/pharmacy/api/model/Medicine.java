@@ -33,9 +33,8 @@ public class Medicine {
     @Column(nullable = false)
     private String name;
 
-    @NotEmpty
     @Column(nullable = false)
-    private boolean is_prescript;
+    private boolean isPrescript;
 
     @ManyToMany(mappedBy = "medicines")
     private Set<Prescription> prescriptions;

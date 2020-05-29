@@ -8,11 +8,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.zzpj.pharmacy.api.helpers.EntityHelper;
 import pl.zzpj.pharmacy.api.model.Employee;
 import pl.zzpj.pharmacy.api.objectDTO.EmployeeDTO;
 import pl.zzpj.pharmacy.api.repository.EmployeeRepository;
+import pl.zzpj.pharmacy.api.security.Jwt;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +36,15 @@ public class EmployeeServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
+    @Mock
+    AuthenticationManager authenticationManager;
+
+    @Mock
+    Jwt jwtUtils;
+
+    @Mock
+    UserDetailsService userDetailsService;
+
     @InjectMocks
     EmployeeService employeeService;
 
@@ -43,7 +55,8 @@ public class EmployeeServiceTest {
 
     @BeforeEach
     void setup() {
-        employeeService = new EmployeeService(employeeRepository, passwordEncoder);
+        employeeService = new EmployeeService(employeeRepository, passwordEncoder,
+                authenticationManager, jwtUtils, userDetailsService);
         employee = EntityHelper.prepareEmployee1();
         employee2 = EntityHelper.prepareEmployee2();
         employeeDTO = EntityHelper.prepareEmployeeDTO(employee);

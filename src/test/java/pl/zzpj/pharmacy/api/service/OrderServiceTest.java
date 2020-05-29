@@ -17,15 +17,15 @@ import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
 import pl.zzpj.pharmacy.api.objectDTO.OrderDTO;
 import pl.zzpj.pharmacy.api.repository.ClientRepository;
 import pl.zzpj.pharmacy.api.repository.OrderRepository;
-import pl.zzpj.pharmacy.api.service.OrderService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -117,6 +117,8 @@ public class OrderServiceTest {
         Mockito.when(orderRepository.save(order))
                .thenReturn(order);
         OrderDTO updatedOrderDTO = orderService.updateOrder(this.orderDTO);
+        assertEquals(updatedOrderDTO.getId(), order.getId());
+        assertEquals(updatedOrderDTO.getClient().getId(), order.getClient().getId());
         verify(orderRepository, times(1)).save(ArgumentMatchers.any());
     }
 

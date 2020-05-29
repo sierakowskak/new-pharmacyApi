@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.zzpj.pharmacy.api.exception.ClientException;
+import pl.zzpj.pharmacy.api.exception.EmployeeException;
 
 @ControllerAdvice
 public class EmployeeExceptionAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ClientException.class)
-    public String returnResponse(ClientException e) {
+    @ExceptionHandler(EmployeeException.class)
+    public String returnResponse(EmployeeException e) {
         return e.getMessage();
     }
 }

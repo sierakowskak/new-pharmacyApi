@@ -13,78 +13,79 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.zzpj.pharmacy.api.helpers.EntityHelper;
-import pl.zzpj.pharmacy.api.objectDTO.ClientDTO;
-import pl.zzpj.pharmacy.api.service.ClientService;
+import pl.zzpj.pharmacy.api.objectDTO.MedicineDTO;
+import pl.zzpj.pharmacy.api.service.MedicineService;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class ClientControllerTest {
+public class MedicineControllerTest {
 
     MockMvc mockMvc;
 
     @Mock
-    ClientService clientService;
+    MedicineService medicineService;
 
     @InjectMocks
-    ClientController clientController;
+    MedicineController medicineController;
 
-    ClientDTO clientDTO;
+    MedicineDTO medicineDTO;
     ObjectMapper objectMapper;
 
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(clientController).build();
-        clientController = new ClientController(clientService);
-        clientDTO = EntityHelper.prepareClientDTO(20L);
+        mockMvc = MockMvcBuilders.standaloneSetup(medicineController).build();
+        medicineController = new MedicineController(medicineService);
+        medicineDTO = EntityHelper.prepareMedicineDTO(EntityHelper.prepareMedicine(1L));
         objectMapper = new ObjectMapper();
     }
 
     @Test
-    public void getClient() throws Exception {
-        Mockito.when(clientService.getClient(20L)).thenReturn(clientDTO);
+    public void getMedicine() throws Exception {
+        Mockito.when(medicineService.getMedicine(anyLong())).thenReturn(medicineDTO);
 
-        mockMvc.perform(get("/clients/{id}", 20L)
+        mockMvc.perform(get("/medicines/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void removeClient() throws Exception {
-        mockMvc.perform(delete("/clients/{id}", 20L)
+    public void removeMedicine() throws Exception {
+        mockMvc.perform(delete("/medicines/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getAllClients() throws Exception {
-        Mockito.when(clientService.getAllClients()).thenReturn(Collections.singletonList(clientDTO));
-        mockMvc.perform(get("/clients")
+    public void getAllMedicines() throws Exception {
+        Mockito.when(medicineService.getAllMedicines()).thenReturn(Arrays.asList(medicineDTO));
+        mockMvc.perform(get("/medicines")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void addClient() throws Exception {
-        Mockito.when(clientService.addClient(any())).thenReturn(clientDTO);
-        mockMvc.perform(post("/clients")
+    public void addMedicine() throws Exception {
+        Mockito.when(medicineService.addMedicine(any())).thenReturn(medicineDTO);
+        mockMvc.perform(post("/medicines")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(clientDTO)))
+                .content(objectMapper.writeValueAsString(medicineDTO)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void updateClient() throws Exception {
-        Mockito.when(clientService.updateClient(any())).thenReturn(clientDTO);
-        mockMvc.perform(put("/clients")
+    public void updateMedicine() throws Exception {
+        Mockito.when(medicineService.updateMedicine(any())).thenReturn(medicineDTO);
+        mockMvc.perform(put("/medicines")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(clientDTO)))
+                .content(objectMapper.writeValueAsString(medicineDTO)))
                 .andExpect(status().isOk());
     }
 

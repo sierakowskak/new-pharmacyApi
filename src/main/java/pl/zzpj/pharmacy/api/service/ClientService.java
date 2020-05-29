@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
 
-    private ClientRepository clients;
-    private OrderRepository orderRepository;
+    private final ClientRepository clients;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public ClientService(ClientRepository clients, OrderRepository orders) {
