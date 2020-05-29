@@ -1,7 +1,7 @@
 Feature: Employee
 
   Scenario: Get All Employees
-    Given url 'http://localhost:8080/employees'
+    Given url 'https://pharmacytul.herokuapp.com/employees'
     When method GET
     Then status 200
 

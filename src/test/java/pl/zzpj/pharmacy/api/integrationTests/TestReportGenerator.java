@@ -20,15 +20,17 @@ class TestReportGenerator {
     public void generate() {
         System.setProperty("mock.env", "karateTesting"); // ensure reset if other tests (e.g. mock) had set env in CI
         Results results = Runner.parallel(getClass(), 1);
-        TestReportGenerator.generateReport(results.getReportDir());
+        Configuration config = new Configuration(new File("target"), "karateTesting");
+        config.setBuildNumber("0");
+        TestReportGenerator.generateReport(results.getReportDir(),config);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
 
-    public static void generateReport(String karateOutputPath) {
+    public static void generateReport(String karateOutputPath, Configuration config) {
         Collection<File> jsonFiles = FileUtils.listFiles(new File(karateOutputPath), new String[]{"json"}, true);
         List<String> jsonPaths = new ArrayList(jsonFiles.size());
         jsonFiles.forEach(file -> jsonPaths.add(file.getAbsolutePath()));
-        Configuration config = new Configuration(new File("target"), "karateTesting");
+
         ReportBuilder reportBuilder = new ReportBuilder(jsonPaths, config);
         reportBuilder.generateReports();
     }
