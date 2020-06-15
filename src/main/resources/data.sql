@@ -9,3 +9,8 @@ INSERT INTO medicines (is_Prescript, name) VALUES
 (false, 'Aspiryna'),
 (false, 'Viagra'),
 (true, 'Acodin');
+
+insert into orders (id, client_id) values (1,1);
+insert into medicine_order(amount, order_id, medicine_id) values
+(1, 1, 1),
+(2, 1, 2);
