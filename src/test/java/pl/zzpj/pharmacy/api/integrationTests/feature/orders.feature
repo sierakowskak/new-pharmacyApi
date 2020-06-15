@@ -12,8 +12,6 @@ Feature: Orders
     Then status 201
 
   Scenario: Get order by id
-    Given url 'https://pharmacytul.herokuapp.com/orders/20'
+    Given url 'https://pharmacytul.herokuapp.com/orders/1'
     When method GET
     Then status 200
-
-
